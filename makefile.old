@@ -1,0 +1,230 @@
+# 20210128 makefile for WASM
+
+#EMSDK= C:\emsdk\upstream\emscripten
+#CC= $(EMSDK)\em++ 
+CC= cc 
+LINK= gcc
+#AR= $(EMSDK)\emar
+AR= ar
+	
+DEBUG= 1
+
+PLATFORM= Win32
+
+BUILD= Debug
+OFLAGS += -O0 -g -D_DEBUG
+
+#BUILD= Release
+#OFLAGS += -O2 -s -DNDEBUG
+
+OUTPATH= $(BUILD)_$(PLATFORM)
+#OUTPATH= ./bin/
+
+CFLAGS= -O3 -c -s WASM=1 $(OFLAGS) \
+-I../EasyViewLib -I../sqlite3 -I../zlib
+
+LFLAGS= -Wl,-b64 -maix64 -lstdc++ -lpthread -lm
+AFLAGS= rs
+
+SRCS= Base64.cpp CRYPT_LIB.CPP CRYPT_MISC.CPP EasyArray.cpp EasyBlob.cpp EasyCrypt.cpp EasyDb.cpp EasyGeometry.cpp EasyIdx.cpp EasyIni.cpp \
+	EasyLib.cpp EasyLibUnitTest.cpp EasyLines.cpp EasyMap.cpp EasyMem.cpp EasyModule.cpp EasyParser.cpp EasyPoint.cpp EasyPoint32.cpp \
+	EasyRect.cpp EasyScript.cpp EasySize.cpp EasySort.cpp EasySqliteDb.cpp EasyStaticMemory.cpp EasyStream.cpp EasyString.cp ar
+	p EasyStringW.cpp \
+	EasySync.cpp EasyTime.cpp Flate.cpp FloatRect.cpp FullTextIdx.cpp LZWStream.cpp Matrices.cpp NumberToLetters.cpp MD5.cpp MyDebugger.cpp Rc4.cpp Record.cpp \
+	RIPEMD160.cpp rmd160.c SemanticBuild.cpp SHA1.c sha2.c SmartAFX.cpp SmartFlag.cpp SmartGDI.cpp SmartHelper.cpp SmartLib.cpp SmartLog.cpp \
+	StatisticsStuff.cpp SwKey.cpp Vectors.cpp XMLParser.cpp PerspectiveGrid.cpp TextFile.cpp
+
+OBJS= $(OUTPATH)/Base64.bc $(OUTPATH)/CRYPT_LIB.bc $(OUTPATH)/CRYPT_MISC.bc $(OUTPATH)/EasyArray.bc $(OUTPATH)/EasyBlob.bc $(OUTPATH)/EasyCrypt.bc \
+	$(OUTPATH)/EasyDb.bc $(OUTPATH)/EasyGeometry.bc $(OUTPATH)/EasyIdx.bc $(OUTPATH)/EasyIni.bc $(OUTPATH)/EasyLib.bc $(OUTPATH)/EasyLibUnitTest.bc \
+	$(OUTPATH)/EasyLines.bc $(OUTPATH)/EasyMap.bc $(OUTPATH)/EasyMem.bc $(OUTPATH)/EasyModule.bc $(OUTPATH)/EasyParser.bc $(OUTPATH)/EasyPoint.bc \
+	$(OUTPATH)/EasyPoint32.bc $(OUTPATH)/EasyRect.bc $(OUTPATH)/EasyScript.bc $(OUTPATH)/EasySize.bc $(OUTPATH)/EasySort.bc $(OUTPATH)/EasySqliteDb.bc \
+	$(OUTPATH)/EasyStaticMemory.bc $(OUTPATH)/EasyStream.bc $(OUTPATH)/EasyString.bc $(OUTPATH)/EasyStringW.bc $(OUTPATH)/EasySync.bc $(OUTPATH)/EasyTime.bc $(OUTPATH)/Flate.bc \
+	$(OUTPATH)/FloatRect.bc $(OUTPATH)/FullTextIdx.bc $(OUTPATH)/LZWStream.bc $(OUTPATH)/Matrices.bc $(OUTPATH)/NumberToLetters.bc $(OUTPATH)/MD5.bc \
+	$(OUTPATH)/MyDebugger.bc $(OUTPATH)/Rc4.bc $(OUTPATH)/Record.bc $(OUTPATH)/RIPEMD160.bc $(OUTPATH)/rmd160.bc $(OUTPATH)/SemanticBuild.bc $(OUTPATH)/SHA1.bc \
+	$(OUTPATH)/sha2.bc $(OUTPATH)/SmartAFX.bc $(OUTPATH)/SmartFlag.bc $(OUTPATH)/SmartGDI.bc $(OUTPATH)/SmartHelper.bc $(OUTPATH)/SmartLib.bc $(OUTPATH)/SmartLog.bc \
+	$(OUTPATH)/StatisticsStuff.bc $(OUTPATH)/SwKey.bc $(OUTPATH)/Vectors.bc $(OUTPATH)/XMLParser.bc $(OUTPATH)/PerspectiveGrid.bc $(OUTPATH)/TextFile.bc
+	
+all: $(OUTPATH)/libEasyLib.a
+	copy $(OUTPATH)\libEasyLib.a ..\lib\Win32\$(BUILD)_$(PLATFORM)
+
+#all: testLinux
+
+testLinux: testLinux.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/testLinux.bc testLinux.cpp
+	$(LINK) $(LFLAGS) -o $(OUTPATH)/testLinux $(OUTPATH)/testLinux.bc \
+	-lsqlite -lz -lEasyLib \
+	-L$(OUTPATH) -L../sqlite3/$(OUTPATH) -L../zlib/$(OUTPATH)
+	
+$(OUTPATH)/libEasyLib.a: $(OBJS)
+	$(AR) $(AFLAGS) $(OUTPATH)/libEasyLib.a $(OBJS)
+	
+$(OUTPATH)/Base64.bc: Base64.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Base64.bc Base64.cpp
+
+$(OUTPATH)/CRYPT_LIB.bc: CRYPT_LIB.CPP
+	$(CC) $(CFLAGS) -o $(OUTPATH)/CRYPT_LIB.bc CRYPT_LIB.CPP
+
+$(OUTPATH)/CRYPT_MISC.bc: CRYPT_MISC.CPP
+	$(CC) $(CFLAGS) -o $(OUTPATH)/CRYPT_MISC.bc CRYPT_MISC.CPP
+
+$(OUTPATH)/EasyArray.bc: EasyArray.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyArray.bc EasyArray.cpp
+
+$(OUTPATH)/EasyBlob.bc: EasyBlob.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyBlob.bc EasyBlob.cpp
+
+$(OUTPATH)/EasyCrypt.bc: EasyCrypt.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyCrypt.bc EasyCrypt.cpp
+
+$(OUTPATH)/EasyDb.bc: EasyDb.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyDb.bc EasyDb.cpp
+
+$(OUTPATH)/EasyGeometry.bc: EasyGeometry.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyGeometry.bc EasyGeometry.cpp
+
+$(OUTPATH)/EasyIdx.bc: EasyIdx.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyIdx.bc EasyIdx.cpp
+
+$(OUTPATH)/EasyIni.bc: EasyIni.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyIni.bc EasyIni.cpp
+
+$(OUTPATH)/EasyLib.bc: EasyLib.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyLib.bc EasyLib.cpp
+
+$(OUTPATH)/EasyLibUnitTest.bc: EasyLibUnitTest.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyLibUnitTest.bc EasyLibUnitTest.cpp
+
+$(OUTPATH)/EasyLines.bc: EasyLines.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyLines.bc EasyLines.cpp
+
+$(OUTPATH)/EasyMap.bc: EasyMap.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyMap.bc EasyMap.cpp
+
+$(OUTPATH)/EasyMem.bc: EasyMem.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyMem.bc EasyMem.cpp
+
+$(OUTPATH)/EasyModule.bc: EasyModule.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyModule.bc EasyModule.cpp
+
+$(OUTPATH)/EasyParser.bc: EasyParser.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyParser.bc EasyParser.cpp
+
+$(OUTPATH)/EasyPoint.bc: EasyPoint.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyPoint.bc EasyPoint.cpp
+
+$(OUTPATH)/EasyPoint32.bc: EasyPoint32.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyPoint32.bc EasyPoint32.cpp
+
+$(OUTPATH)/EasyRect.bc: EasyRect.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyRect.bc EasyRect.cpp
+
+$(OUTPATH)/EasyScript.bc: EasyScript.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyScript.bc EasyScript.cpp
+
+$(OUTPATH)/EasySize.bc: EasySize.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasySize.bc EasySize.cpp
+
+$(OUTPATH)/EasySort.bc: EasySort.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasySort.bc EasySort.cpp
+
+$(OUTPATH)/EasySqliteDb.bc: EasySqliteDb.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasySqliteDb.bc EasySqliteDb.cpp
+
+$(OUTPATH)/EasyStaticMemory.bc: EasyStaticMemory.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyStaticMemory.bc EasyStaticMemory.cpp
+
+$(OUTPATH)/EasyStream.bc: EasyStream.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyStream.bc EasyStream.cpp
+
+$(OUTPATH)/EasySync.bc: EasySync.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasySync.bc EasySync.cpp
+
+$(OUTPATH)/EasyString.bc: EasyString.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyString.bc EasyString.cpp
+
+$(OUTPATH)/EasyStringW.bc: EasyStringW.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyStringW.bc EasyStringW.cpp
+
+$(OUTPATH)/EasyTime.bc: EasyTime.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/EasyTime.bc EasyTime.cpp
+
+$(OUTPATH)/Flate.bc: Flate.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Flate.bc Flate.cpp
+
+$(OUTPATH)/FloatRect.bc: FloatRect.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/FloatRect.bc FloatRect.cpp
+
+$(OUTPATH)/FullTextIdx.bc: FullTextIdx.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/FullTextIdx.bc FullTextIdx.cpp
+
+$(OUTPATH)/LZWStream.bc: LZWStream.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/LZWStream.bc LZWStream.cpp
+
+$(OUTPATH)/Matrices.bc: Matrices.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Matrices.bc Matrices.cpp
+
+$(OUTPATH)/NumberToLetters.bc: NumberToLetters.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/NumberToLetters.bc NumberToLetters.cpp
+
+$(OUTPATH)/MD5.bc: MD5.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/MD5.bc MD5.cpp
+
+$(OUTPATH)/MyDebugger.bc: MyDebugger.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/MyDebugger.bc MyDebugger.cpp
+
+$(OUTPATH)/Rc4.bc: Rc4.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Rc4.bc Rc4.cpp
+
+$(OUTPATH)/Record.bc: Record.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Record.bc Record.cpp
+
+$(OUTPATH)/RIPEMD160.bc: RIPEMD160.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/RIPEMD160.bc RIPEMD160.cpp
+
+$(OUTPATH)/rmd160.bc: rmd160.c
+	$(CC) $(CFLAGS) -o $(OUTPATH)/rmd160.bc rmd160.c
+
+$(OUTPATH)/SemanticBuild.bc: SemanticBuild.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SemanticBuild.bc SemanticBuild.cpp
+
+$(OUTPATH)/SHA1.bc: SHA1.c
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SHA1.bc SHA1.c
+
+$(OUTPATH)/sha2.bc: sha2.c
+	$(CC) $(CFLAGS) -o $(OUTPATH)/sha2.bc sha2.c
+
+$(OUTPATH)/SmartAFX.bc: SmartAFX.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartAFX.bc SmartAFX.cpp
+
+$(OUTPATH)/SmartFlag.bc: SmartFlag.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartFlag.bc SmartFlag.cpp
+
+$(OUTPATH)/SmartGDI.bc: SmartGDI.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartGDI.bc SmartGDI.cpp
+
+$(OUTPATH)/SmartHelper.bc: SmartHelper.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartHelper.bc SmartHelper.cpp
+
+$(OUTPATH)/SmartLib.bc: SmartLib.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartLib.bc SmartLib.cpp
+
+$(OUTPATH)/SmartLog.bc: SmartLog.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SmartLog.bc SmartLog.cpp
+
+$(OUTPATH)/StatisticsStuff.bc: StatisticsStuff.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/StatisticsStuff.bc StatisticsStuff.cpp
+
+$(OUTPATH)/SwKey.bc: SwKey.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/SwKey.bc SwKey.cpp
+
+$(OUTPATH)/Vectors.bc: Vectors.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/Vectors.bc Vectors.cpp
+
+$(OUTPATH)/XMLParser.bc: XMLParser.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/XMLParser.bc XMLParser.cpp
+
+$(OUTPATH)/PerspectiveGrid.bc: PerspectiveGrid.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/PerspectiveGrid.bc PerspectiveGrid.cpp
+
+$(OUTPATH)/TextFile.bc: TextFile.cpp
+	$(CC) $(CFLAGS) -o $(OUTPATH)/TextFile.bc TextFile.cpp
