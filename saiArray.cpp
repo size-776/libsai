@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "afx.h"
 #include "saiArray.h"
 
-#include "last_header.h"
+//#include "last_header.h"
 
 #define ARRAYCLASS CsaiIntArray
 #define ARRAYITEM int
@@ -9,11 +9,11 @@
 #undef ARRAYCLASS
 #undef ARRAYITEM
 
-#define ARRAYCLASS CsaiStrArray
-#define ARRAYITEM CString
-#include "saiArray.cc"
-#undef ARRAYCLASS
-#undef ARRAYITEM
+//#define ARRAYCLASS CsaiStrArray
+//#define ARRAYITEM CString
+//#include "saiArray.cc"
+//#undef ARRAYCLASS
+//#undef ARRAYITEM
 
 #define ARRAYCLASS CsaiDoubleArray
 #define ARRAYITEM double
@@ -33,8 +33,8 @@
 #undef ARRAYCLASS
 #undef ARRAYITEM
 
-#define ARRAYCLASS CsaiStringList
-#define ARRAYITEM CString
-#include "saiArray.cc"
-#undef ARRAYCLASS
-#undef ARRAYITEM
+//#define ARRAYCLASS CsaiStringList
+//#define ARRAYITEM CString
+//#include "saiArray.cc"
+//#undef ARRAYCLASS
+//#undef ARRAYITEM

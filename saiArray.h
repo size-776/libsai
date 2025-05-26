@@ -8,11 +8,11 @@
 #undef ARRAYCLASS
 #undef ARRAYITEM
 
-#define ARRAYCLASS CsaiStrArray
-#define ARRAYITEM CString
-#include "saiArray.hh"
-#undef ARRAYCLASS
-#undef ARRAYITEM
+//#define ARRAYCLASS CsaiStrArray
+//#define ARRAYITEM CString
+//#include "saiArray.hh"
+//#undef ARRAYCLASS
+//#undef ARRAYITEM
 
 #define ARRAYCLASS CsaiDoubleArray
 #define ARRAYITEM double
@@ -32,11 +32,11 @@
 #undef ARRAYCLASS
 #undef ARRAYITEM
 
-#define ARRAYCLASS CsaiStringList
-#define ARRAYITEM CString
-#include "saiArray.hh"
-#undef ARRAYCLASS
-#undef ARRAYITEM
+//#define ARRAYCLASS CsaiStringList
+//#define ARRAYITEM CString
+//#include "saiArray.hh"
+//#undef ARRAYCLASS
+//#undef ARRAYITEM
 
 #include "saiVTypeArray.h"
 

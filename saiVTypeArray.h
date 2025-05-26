@@ -321,5 +321,3 @@ POSITION CEasyVTypeList<T>::InsertBefore(POSITION position, T newElement)
 	CEasyVTypeList<T>::InsertAt(position-1, newElement);
 	return (POSITION) (intptr_t) (position);
 }
-
-#endif // _EASYVTYPEARRAY_H
