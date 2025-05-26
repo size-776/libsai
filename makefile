@@ -19,7 +19,7 @@ OFLAGS += -O0 -g -D_DEBUG
 
 OUTPATH= $(BUILD)_$(PLATFORM)
 
-CFLAGS= -O3 -c -s $(OFLAGS) \
+CFLAGS= -O3 -c -s -D_WIN32 -fpermissive $(OFLAGS) \
 -I../EasyViewLib -I../sqlite3 -I../zlib
 
 LFLAGS= -Wl,-b64 -maix64 -lstdc++ -lpthread -lm

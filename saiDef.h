@@ -3,6 +3,7 @@
 #	ifdef __cplusplus_winrt
 #	define _LIBSAI_WINRT
 #	endif
+#	define _LIBSAI_WIN
 //#elif _WIN64
 #elif defined(__APPLE__)
 #	define _LIBSAI
